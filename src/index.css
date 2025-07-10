@@ -27,7 +27,7 @@ All colors MUST be HSL.
     --muted: 210 16% 98%;
     --muted-foreground: 0 0% 45%;
 
-    --accent: 330 65% 51%;
+    --accent: 208 100% 47%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
@@ -214,4 +214,17 @@ All colors MUST be HSL.
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 5px hsl(var(--primary) / 0.5); }
   50% { box-shadow: 0 0 20px hsl(var(--primary) / 0.8); }
+}
+
+/* Mobile onboarding improvements */
+@media (max-width: 768px) {
+  .onboarding-highlight {
+    @apply ring-1 ring-primary;
+    animation: pulse-glow-mobile 2s infinite;
+  }
+  
+  @keyframes pulse-glow-mobile {
+    0%, 100% { box-shadow: 0 0 3px hsl(var(--primary) / 0.3); }
+    50% { box-shadow: 0 0 10px hsl(var(--primary) / 0.6); }
+  }
 }

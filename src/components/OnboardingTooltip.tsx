@@ -1,6 +1,8 @@
+
 import React, { useEffect, useState } from 'react';
 import { X, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface OnboardingStep {
   id: string;
@@ -25,6 +27,7 @@ export const OnboardingTooltip: React.FC<OnboardingTooltipProps> = ({
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!isActive || !steps[currentStep]) return;
@@ -36,6 +39,11 @@ export const OnboardingTooltip: React.FC<OnboardingTooltipProps> = ({
       element.style.position = 'relative';
       element.style.zIndex = '1000';
       element.classList.add('onboarding-highlight');
+      
+      // Scroll to element on mobile
+      if (isMobile) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
 
     return () => {
@@ -45,7 +53,7 @@ export const OnboardingTooltip: React.FC<OnboardingTooltipProps> = ({
         element.classList.remove('onboarding-highlight');
       }
     };
-  }, [currentStep, isActive, steps]);
+  }, [currentStep, isActive, steps, isMobile]);
 
   if (!isActive || !steps[currentStep] || !targetElement) return null;
 
@@ -56,8 +64,20 @@ export const OnboardingTooltip: React.FC<OnboardingTooltipProps> = ({
     const base = {
       position: 'fixed' as const,
       zIndex: 1001,
-      maxWidth: '300px',
+      maxWidth: isMobile ? '90vw' : '300px',
+      margin: isMobile ? '0 5vw' : '0',
     };
+
+    if (isMobile) {
+      // On mobile, always position at bottom with some padding
+      return {
+        ...base,
+        bottom: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '90vw',
+      };
+    }
 
     switch (step.position) {
       case 'top':
@@ -112,11 +132,11 @@ export const OnboardingTooltip: React.FC<OnboardingTooltipProps> = ({
         className="bg-background border border-border rounded-lg p-4 shadow-lg animate-scale-in"
       >
         <div className="flex items-start justify-between mb-2">
-          <h3 className="font-medium text-sm">{step.title}</h3>
+          <h3 className="font-medium text-sm pr-2">{step.title}</h3>
           <Button
             variant="ghost"
             size="icon"
-            className="h-5 w-5 -mt-1 -mr-1"
+            className="h-5 w-5 -mt-1 -mr-1 flex-shrink-0"
             onClick={onSkip}
           >
             <X className="w-3 h-3" />
@@ -141,7 +161,7 @@ export const OnboardingTooltip: React.FC<OnboardingTooltipProps> = ({
             <Button variant="ghost" size="sm" onClick={onSkip}>
               Passer
             </Button>
-            <Button size="sm" onClick={handleNext}>
+            <Button size="sm" onClick={handleNext} className="bg-primary hover:bg-primary/90">
               {currentStep < steps.length - 1 ? (
                 <>
                   Suivant
