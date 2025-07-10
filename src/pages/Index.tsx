@@ -414,134 +414,154 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="border-b border-border/50 bg-background/80 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">L</span>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex flex-col">
+      {/* Modern Header */}
+      <header className="border-b border-border/40 bg-background/95 backdrop-blur-xl sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <div className="w-9 h-9 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                <span className="text-primary-foreground font-bold text-lg">L</span>
+              </div>
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur opacity-75" />
             </div>
-            <h1 className="text-xl font-semibold text-foreground">Lexica</h1>
+            <div>
+              <h1 className="text-xl font-semibold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
+                Lexica
+              </h1>
+            </div>
           </div>
-          <div className="flex items-center space-x-2">
+          
+          <div className="flex items-center space-x-3">
             <Button 
               onClick={startNewConversation}
               variant="ghost" 
               size="sm"
-              className="text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
             >
               Nouvelle conversation
             </Button>
+            
+            <div className="h-4 w-px bg-border/60" />
+            
             <Button
               variant="ghost"
               size="icon"
-              className="h-9 w-9"
+              className="h-9 w-9 hover:bg-muted/50 transition-all duration-200"
               onClick={() => setShowOnboarding(true)}
             >
               <HelpCircle className="w-4 h-4" />
             </Button>
+            
             <div data-onboarding="history" className="flex items-center space-x-2">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="h-9 w-9">
-                  <Database className="w-4 h-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="w-80 z-50">
-                <SheetHeader>
-                  <SheetTitle className="flex items-center gap-2">
-                    <Database className="w-5 h-5" />
-                    Historique des données
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="mt-6">
-                  <ScrollArea className="h-96">
-                    <div className="space-y-2">
-                      {dataHistory.map((entry) => (
-                        <div key={entry.id} className="p-3 rounded-lg border border-border">
-                          <div className="flex items-start gap-2">
-                            {entry.type === 'file' ? (
-                              <File className="w-4 h-4 text-primary mt-0.5" />
-                            ) : (
-                              <Type className="w-4 h-4 text-primary mt-0.5" />
-                            )}
-                            <div className="flex-1 min-w-0">
-                              <div className="font-medium text-sm truncate">{entry.name}</div>
-                              <div className="text-xs text-muted-foreground flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                {entry.addedAt.toLocaleDateString()} à {entry.addedAt.toLocaleTimeString()}
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon" className="h-9 w-9 border-border/60 hover:border-border hover:bg-muted/50 transition-all duration-200">
+                    <Database className="w-4 h-4" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="w-80 z-50 border-border/60">
+                  <SheetHeader>
+                    <SheetTitle className="flex items-center gap-2">
+                      <Database className="w-5 h-5" />
+                      Historique des données
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-6">
+                    <ScrollArea className="h-96">
+                      <div className="space-y-3">
+                        {dataHistory.map((entry) => (
+                          <div key={entry.id} className="p-3 rounded-lg border border-border/60 bg-card/50 hover:bg-card transition-colors duration-200">
+                            <div className="flex items-start gap-3">
+                              {entry.type === 'file' ? (
+                                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                  <File className="w-4 h-4 text-primary" />
+                                </div>
+                              ) : (
+                                <div className="w-8 h-8 rounded-lg bg-secondary/80 flex items-center justify-center">
+                                  <Type className="w-4 h-4 text-secondary-foreground" />
+                                </div>
+                              )}
+                              <div className="flex-1 min-w-0">
+                                <div className="font-medium text-sm truncate text-foreground">{entry.name}</div>
+                                <div className="text-xs text-muted-foreground flex items-center gap-1 mt-1">
+                                  <Clock className="w-3 h-3" />
+                                  {entry.addedAt.toLocaleDateString()} à {entry.addedAt.toLocaleTimeString()}
+                                </div>
                               </div>
-                              <Badge variant="secondary" className="text-xs mt-1">
-                                {entry.type === 'file' ? 'Fichier' : 'Texte'}
-                              </Badge>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                      {dataHistory.length === 0 && (
-                        <p className="text-sm text-muted-foreground text-center py-8">
-                          Aucune donnée ajoutée
-                        </p>
-                      )}
-                    </div>
-                  </ScrollArea>
-                </div>
-              </SheetContent>
-            </Sheet>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="h-9 w-9">
-                  <History className="w-4 h-4" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="w-80 z-50">
-                <SheetHeader>
-                  <SheetTitle className="flex items-center gap-2">
-                    <MessageSquare className="w-5 h-5" />
-                    Historique des conversations
-                  </SheetTitle>
-                </SheetHeader>
-                <div className="mt-6">
-                  <ScrollArea className="h-96">
-                    <div className="space-y-2">
-                      {conversations.map((conv) => (
-                        <div key={conv.id} className="group relative">
-                          <Button
-                            variant={currentConversationId === conv.id ? "secondary" : "ghost"}
-                            className="w-full justify-start h-auto p-3 pr-10"
-                            onClick={() => loadConversation(conv)}
-                          >
-                            <div className="text-left w-full">
-                              <div className="font-medium text-sm truncate">{conv.title}</div>
-                              <div className="text-xs text-muted-foreground">
-                                {conv.updatedAt.toLocaleDateString()}
+                        ))}
+                        {dataHistory.length === 0 && (
+                          <div className="text-center py-12">
+                            <Database className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
+                            <p className="text-sm text-muted-foreground">
+                              Aucune donnée ajoutée
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </ScrollArea>
+                  </div>
+                </SheetContent>
+              </Sheet>
+              
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon" className="h-9 w-9 border-border/60 hover:border-border hover:bg-muted/50 transition-all duration-200">
+                    <History className="w-4 h-4" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent className="w-80 z-50 border-border/60">
+                  <SheetHeader>
+                    <SheetTitle className="flex items-center gap-2">
+                      <MessageSquare className="w-5 h-5" />
+                      Conversations
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-6">
+                    <ScrollArea className="h-96">
+                      <div className="space-y-2">
+                        {conversations.map((conv) => (
+                          <div key={conv.id} className="group relative">
+                            <Button
+                              variant={currentConversationId === conv.id ? "secondary" : "ghost"}
+                              className="w-full justify-start h-auto p-3 text-left hover:bg-muted/50 transition-all duration-200"
+                              onClick={() => loadConversation(conv)}
+                            >
+                              <div className="pr-8 w-full">
+                                <div className="font-medium text-sm truncate">{conv.title}</div>
+                                <div className="text-xs text-muted-foreground mt-1">
+                                  {conv.updatedAt.toLocaleDateString()}
+                                </div>
                               </div>
-                            </div>
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-opacity"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              deleteConversation(conv.id);
-                            }}
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      ))}
-                      {conversations.length === 0 && (
-                        <p className="text-sm text-muted-foreground text-center py-8">
-                          Aucune conversation enregistrée
-                        </p>
-                      )}
-                    </div>
-                  </ScrollArea>
-                </div>
-              </SheetContent>
-            </Sheet>
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                deleteConversation(conv.id);
+                              }}
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                          </div>
+                        ))}
+                        {conversations.length === 0 && (
+                          <div className="text-center py-12">
+                            <MessageSquare className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
+                            <p className="text-sm text-muted-foreground">
+                              Aucune conversation
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </ScrollArea>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>
@@ -549,17 +569,27 @@ const Index = () => {
 
       {/* Initial centered input state */}
       {!hasStartedChat && (
-        <div className="flex-1 flex items-center justify-center px-4">
-          <div className="w-full max-w-2xl animate-fade-in">
-              <div className="text-center mb-12">
-              <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <span className="text-primary-foreground font-bold text-2xl">L</span>
+        <div className="flex-1 flex items-center justify-center px-6">
+          <div className="w-full max-w-2xl">
+            <div className="text-center mb-16">
+              <div className="relative mb-8">
+                <div className="w-20 h-20 bg-gradient-to-r from-primary via-primary to-primary/80 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-primary/25">
+                  <span className="text-primary-foreground font-bold text-3xl">L</span>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-primary/10 rounded-3xl blur-xl scale-110" />
               </div>
-              <h1 className="text-4xl font-light text-foreground mb-3">Lexica</h1>
-              <p className="text-muted-foreground text-lg">Comment puis-je vous aider aujourd&apos;hui ?</p>
-              {dataHistory.length === 0 && (
-                <p className="text-sm text-muted-foreground mt-2">
-                  Commencez par ajouter du contenu avec le bouton + ci-dessous
+              
+              <h1 className="text-5xl font-light bg-gradient-to-r from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent mb-4">
+                Lexica
+              </h1>
+              
+              {dataHistory.length === 0 ? (
+                <p className="text-muted-foreground text-lg">
+                  Commencez par ajouter votre contenu
+                </p>
+              ) : (
+                <p className="text-muted-foreground text-lg">
+                  Posez votre question
                 </p>
               )}
             </div>
@@ -573,33 +603,37 @@ const Index = () => {
                 className="hidden"
               />
               
-              <div className="flex items-center bg-card border border-border rounded-xl p-3 shadow-sm">
+              <div className="flex items-center bg-card/80 backdrop-blur-sm border border-border/60 rounded-2xl p-4 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       size="icon"
                       disabled={isUploading || isLoading}
-                      className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                      className="h-10 w-10 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
                       data-onboarding="add-button"
                     >
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-5 h-5" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48 bg-card border border-border shadow-lg z-50">
+                  <DropdownMenuContent align="start" className="w-52 bg-card/95 backdrop-blur-sm border-border/60 shadow-xl z-50">
                     <DropdownMenuItem 
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center gap-2 cursor-pointer"
+                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
                     >
-                      <File className="w-4 h-4" />
-                      Ajouter un fichier
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <File className="w-4 h-4 text-primary" />
+                      </div>
+                      <span>Ajouter un fichier</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => setTextModalOpen(true)}
-                      className="flex items-center gap-2 cursor-pointer"
+                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
                     >
-                      <Type className="w-4 h-4" />
-                      Ajouter du texte
+                      <div className="w-8 h-8 rounded-lg bg-secondary/80 flex items-center justify-center">
+                        <Type className="w-4 h-4 text-secondary-foreground" />
+                      </div>
+                      <span>Ajouter du texte</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -608,9 +642,9 @@ const Index = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={dataHistory.length === 0 ? "Ajoutez d'abord du contenu avec +" : "Tapez votre message..."}
+                  placeholder={dataHistory.length === 0 ? "Ajoutez d'abord du contenu..." : "Tapez votre message..."}
                   disabled={isLoading || dataHistory.length === 0}
-                  className="border-0 bg-transparent focus-visible:ring-0 text-base"
+                  className="border-0 bg-transparent focus-visible:ring-0 text-base placeholder:text-muted-foreground/60"
                   data-onboarding="input"
                 />
                 
@@ -618,13 +652,13 @@ const Index = () => {
                   onClick={() => handleSendMessage(inputValue)}
                   disabled={!inputValue.trim() || isLoading || dataHistory.length === 0}
                   size="icon"
-                  className="h-8 w-8 bg-primary hover:bg-primary/90"
+                  className="h-10 w-10 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-200"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
               </div>
               
-              {/* Upload Error */}
+              {/* Errors */}
               {uploadError && (
                 <ErrorDisplay 
                   message={uploadError} 
@@ -632,7 +666,6 @@ const Index = () => {
                 />
               )}
               
-              {/* Chat Error */}
               {chatError && (
                 <ErrorDisplay 
                   message={chatError} 
@@ -643,20 +676,22 @@ const Index = () => {
             
             {/* Upload Progress */}
             {isUploading && (
-              <div className="mt-4">
-                <div className="bg-muted rounded-lg p-4">
-                  <div className="flex items-center space-x-3">
-                    <Upload className="w-4 h-4 text-primary animate-pulse" />
+              <div className="mt-6">
+                <div className="bg-card/80 backdrop-blur-sm border border-border/60 rounded-xl p-4 shadow-lg">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Upload className="w-5 h-5 text-primary animate-pulse" />
+                    </div>
                     <div className="flex-1">
-                      <div className="text-sm text-foreground mb-1">Téléchargement en cours...</div>
-                      <div className="w-full bg-border rounded-full h-2">
+                      <div className="text-sm font-medium text-foreground mb-2">Téléchargement en cours...</div>
+                      <div className="w-full bg-muted/50 rounded-full h-2 overflow-hidden">
                         <div 
-                          className="bg-primary h-2 rounded-full transition-all duration-300"
+                          className="bg-gradient-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-300 ease-out"
                           style={{ width: `${uploadProgress}%` }}
                         />
                       </div>
                     </div>
-                    <div className="text-sm text-muted-foreground">{uploadProgress}%</div>
+                    <div className="text-sm font-medium text-muted-foreground tabular-nums">{uploadProgress}%</div>
                   </div>
                 </div>
               </div>
@@ -669,35 +704,35 @@ const Index = () => {
       {hasStartedChat && (
         <>
           {/* Messages */}
-          <div className="flex-1 px-4 py-6">
+          <div className="flex-1 px-6 py-8">
             <ScrollArea className="h-full custom-scrollbar">
-              <div className="max-w-3xl mx-auto space-y-6">
+              <div className="max-w-4xl mx-auto space-y-8">
                 {messages.map((message, index) => (
                   <div
                     key={message.id}
                     className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} animate-slide-in-up`}
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    <div className={`flex items-start space-x-3 max-w-2xl ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                      <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium transition-smooth hover-lift ${
+                    <div className={`flex items-start space-x-4 max-w-3xl ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200 ${
                         message.type === 'user' 
-                          ? 'bg-primary text-primary-foreground' 
-                          : 'bg-muted text-muted-foreground'
+                          ? 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25' 
+                          : 'bg-muted/80 text-muted-foreground'
                       }`}>
-                        {message.type === 'user' ? <User className="w-3 h-3" /> : 'AI'}
+                        {message.type === 'user' ? <User className="w-4 h-4" /> : <span className="font-bold text-xs">AI</span>}
                       </div>
                       
-                      <div className={`rounded-2xl px-4 py-3 transition-smooth hover-lift ${
+                      <div className={`rounded-2xl px-6 py-4 shadow-sm transition-all duration-200 hover:shadow-md ${
                         message.type === 'user' 
-                          ? 'bg-primary text-primary-foreground' 
-                          : 'bg-muted'
+                          ? 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground' 
+                          : 'bg-card/80 backdrop-blur-sm border border-border/40'
                       }`}>
                         {message.isLoading ? (
-                          <div className="flex items-center space-x-1">
+                          <div className="flex items-center space-x-2">
                             <div className="flex space-x-1">
-                              <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" />
-                              <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                              <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
+                              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                              <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
                             </div>
                           </div>
                         ) : (
@@ -707,11 +742,11 @@ const Index = () => {
                             </div>
                             
                             {message.sources && message.sources.length > 0 && (
-                              <div className="mt-3 pt-3 border-t border-border/50">
-                                <p className="text-xs text-muted-foreground mb-2">Sources :</p>
-                                <div className="flex flex-wrap gap-1">
+                              <div className="mt-4 pt-4 border-t border-border/40">
+                                <p className="text-xs text-muted-foreground mb-3 font-medium">Sources :</p>
+                                <div className="flex flex-wrap gap-2">
                                   {message.sources.map((source, index) => (
-                                    <Badge key={index} variant="secondary" className="text-xs">
+                                    <Badge key={index} variant="secondary" className="text-xs bg-muted/50 hover:bg-muted transition-colors duration-200">
                                       <FileText className="w-3 h-3 mr-1" />
                                       {source.title}
                                       {source.page && ` (p.${source.page})`}
@@ -732,8 +767,8 @@ const Index = () => {
           </div>
 
           {/* Fixed input at bottom */}
-          <div className="border-t border-border bg-background/80 backdrop-blur-sm px-4 py-4">
-            <div className="max-w-3xl mx-auto">
+          <div className="border-t border-border/40 bg-background/95 backdrop-blur-xl px-6 py-4 sticky bottom-0">
+            <div className="max-w-4xl mx-auto">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -742,32 +777,36 @@ const Index = () => {
                 className="hidden"
               />
               
-              <div className="flex items-center bg-card border border-border rounded-xl p-3">
+              <div className="flex items-center bg-card/80 backdrop-blur-sm border border-border/60 rounded-2xl p-3 shadow-lg">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       size="icon"
                       disabled={isUploading || isLoading}
-                      className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                      className="h-9 w-9 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48 bg-card border border-border shadow-lg z-50">
+                  <DropdownMenuContent align="start" className="w-52 bg-card/95 backdrop-blur-sm border-border/60 shadow-xl z-50">
                     <DropdownMenuItem 
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center gap-2 cursor-pointer"
+                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
                     >
-                      <File className="w-4 h-4" />
-                      Ajouter un fichier
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <File className="w-4 h-4 text-primary" />
+                      </div>
+                      <span>Ajouter un fichier</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => setTextModalOpen(true)}
-                      className="flex items-center gap-2 cursor-pointer"
+                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
                     >
-                      <Type className="w-4 h-4" />
-                      Ajouter du texte
+                      <div className="w-8 h-8 rounded-lg bg-secondary/80 flex items-center justify-center">
+                        <Type className="w-4 h-4 text-secondary-foreground" />
+                      </div>
+                      <span>Ajouter du texte</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -778,12 +817,11 @@ const Index = () => {
                   onKeyPress={handleKeyPress}
                   placeholder="Tapez votre message..."
                   disabled={isLoading}
-                  className="border-0 bg-transparent focus-visible:ring-0"
+                  className="border-0 bg-transparent focus-visible:ring-0 placeholder:text-muted-foreground/60"
                 />
                 
-                {/* Chat Error in fixed input */}
                 {chatError && (
-                  <div className="absolute -top-16 left-0 right-0">
+                  <div className="absolute -top-20 left-0 right-0 z-10">
                     <ErrorDisplay 
                       message={chatError} 
                     />
@@ -794,7 +832,7 @@ const Index = () => {
                   onClick={() => handleSendMessage(inputValue)}
                   disabled={!inputValue.trim() || isLoading}
                   size="icon"
-                  className="h-8 w-8 bg-primary hover:bg-primary/90"
+                  className="h-9 w-9 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-200"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
@@ -806,39 +844,40 @@ const Index = () => {
 
       {/* Text Input Modal */}
       <Dialog open={textModalOpen} onOpenChange={setTextModalOpen}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[600px] border-border/60 bg-card/95 backdrop-blur-sm">
           <DialogHeader>
-            <DialogTitle>Ajouter du texte</DialogTitle>
+            <DialogTitle className="text-xl">Ajouter du texte</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-6">
             <Textarea
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
               placeholder="Saisissez votre texte ici..."
-              className="min-h-[200px] resize-none"
+              className="min-h-[200px] resize-none border-border/60 bg-background/50 focus:bg-background transition-colors duration-200"
             />
             
-            {/* Text Error */}
             {textError && (
               <ErrorDisplay 
                 message={textError} 
               />
             )}
             
-            <div className="flex justify-end space-x-2">
+            <div className="flex justify-end space-x-3">
               <Button
                 variant="outline"
                 onClick={() => {
                   setTextModalOpen(false);
                   setTextInput('');
+                  setTextError(null);
                 }}
+                className="border-border/60"
               >
                 Annuler
               </Button>
               <Button
                 onClick={handleTextSubmit}
                 disabled={!textInput.trim() || isUploading}
-                className="bg-primary hover:bg-primary/90"
+                className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25"
               >
                 {isUploading ? "Envoi..." : "Valider"}
               </Button>
