@@ -323,17 +323,7 @@ const Index = () => {
         }
       }
 
-      const successMessage: Message = {
-        id: Date.now().toString(),
-        type: 'bot',
-        content: "✅ Fichier PDF téléchargé avec succès ! Vous pouvez maintenant poser des questions sur son contenu.",
-        timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, successMessage]);
-      setHasStartedChat(true);
-
-      // Add to data history
+      // Add to data history without success message
       const dataEntry: DataEntry = {
         id: Date.now().toString(),
         type: 'file',
@@ -392,18 +382,10 @@ const Index = () => {
         }
       }
 
-      const successMessage: Message = {
-        id: Date.now().toString(),
-        type: 'bot',
-        content: "✅ Texte ajouté avec succès ! Vous pouvez maintenant poser des questions sur son contenu.",
-        timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, successMessage]);
       setHasStartedChat(true);
       setTextModalOpen(false);
 
-      // Add to data history
+      // Add to data history without success message
       const dataEntry: DataEntry = {
         id: Date.now().toString(),
         type: 'text',
@@ -525,13 +507,13 @@ const Index = () => {
                   <ScrollArea className="h-96">
                     <div className="space-y-2">
                       {conversations.map((conv) => (
-                        <div key={conv.id} className="flex items-center gap-2">
+                        <div key={conv.id} className="group relative">
                           <Button
                             variant={currentConversationId === conv.id ? "secondary" : "ghost"}
-                            className="flex-1 justify-start h-auto p-3"
+                            className="w-full justify-start h-auto p-3 pr-10"
                             onClick={() => loadConversation(conv)}
                           >
-                            <div className="text-left">
+                            <div className="text-left w-full">
                               <div className="font-medium text-sm truncate">{conv.title}</div>
                               <div className="text-xs text-muted-foreground">
                                 {conv.updatedAt.toLocaleDateString()}
@@ -541,8 +523,11 @@ const Index = () => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                            onClick={() => deleteConversation(conv.id)}
+                            className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive transition-opacity"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteConversation(conv.id);
+                            }}
                           >
                             <Trash2 className="w-3 h-3" />
                           </Button>
