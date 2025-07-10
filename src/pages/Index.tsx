@@ -10,7 +10,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Textarea } from '@/components/ui/textarea';
 import { ErrorDisplay } from '@/components/ErrorDisplay';
 import { OnboardingTooltip } from '@/components/OnboardingTooltip';
-import { HelpHints } from '@/components/HelpHints';
 
 interface Source {
   title: string;
@@ -629,7 +628,6 @@ const Index = () => {
               {uploadError && (
                 <ErrorDisplay 
                   message={uploadError} 
-                  onRetry={() => setUploadError(null)}
                   className="mt-4"
                 />
               )}
@@ -638,17 +636,11 @@ const Index = () => {
               {chatError && (
                 <ErrorDisplay 
                   message={chatError} 
-                  onRetry={() => setChatError(null)}
                   className="mt-4"
                 />
               )}
             </div>
             
-            {/* Help Hints */}
-            {dataHistory.length === 0 && !isUploading && (
-              <HelpHints />
-            )}
-
             {/* Upload Progress */}
             {isUploading && (
               <div className="mt-4">
@@ -794,7 +786,6 @@ const Index = () => {
                   <div className="absolute -top-16 left-0 right-0">
                     <ErrorDisplay 
                       message={chatError} 
-                      onRetry={() => setChatError(null)}
                     />
                   </div>
                 )}
@@ -831,7 +822,6 @@ const Index = () => {
             {textError && (
               <ErrorDisplay 
                 message={textError} 
-                onRetry={() => setTextError(null)}
               />
             )}
             
