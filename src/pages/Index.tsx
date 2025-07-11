@@ -218,13 +218,19 @@ const Index = () => {
     setInputValue('');
     setIsLoading(true);
 
+    const fullHistory = messages.map(msg => ({
+      role: msg.type === 'user' ? 'user' : 'assistant',
+      content: msg.content
+    }));
     try {
-      const response = await fetch('/ask', {
+      const response = await fetch('api/ask', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: content }),
+        body: JSON.stringify({ messages: fullHistory, question : content }),
         cache: "no-cache"
       });
+      const usedFilenamesHeader = response.headers.get("X-Used-Filenames");
+      const filenames = usedFilenamesHeader?.split("||") || [];
 
       if (!response.ok) {
         throw new Error("Erreur de réseau : " + response.statusText);
@@ -250,13 +256,21 @@ const Index = () => {
         }
       }
 
-      const sources = extractSourcesFromResponse(fullResponse);
+      const sources = filenames
+        .filter(name => name && name.trim() !== "" && name !== "unknown.txt")
+        .map(name => ({
+          title: name,
+          page: null,
+          relevance: null
+        }));
       
       setMessages(prev => prev.map(msg => 
         msg.id === botMessage.id 
-          ? { ...msg, sources, isLoading: false }
+          ? { ...msg, sources: sources.length > 0 ? sources : undefined, isLoading: false }
           : msg
       ));
+      console.log("length of sources", sources.length)
+      console.log("sources is", sources)
 
     } catch (error) {
       console.error("Erreur lors de la requête : ", error);
@@ -270,14 +284,6 @@ const Index = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const extractSourcesFromResponse = (response: string): Source[] => {
-    const mockSources = [
-      { title: "Document interne", page: 15, relevance: 0.92 },
-      { title: "Guide utilisateur", page: 42, relevance: 0.85 }
-    ];
-    return mockSources;
   };
 
   const handleFileUpload = async (file: File) => {
@@ -294,7 +300,7 @@ const Index = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('/file', {
+      const response = await fetch('api/file', {
         method: "POST",
         body: formData,
         cache: "no-cache"
@@ -352,7 +358,7 @@ const Index = () => {
     setUploadProgress(0);
 
     try {
-      const response = await fetch('/text', {
+      const response = await fetch('api/text', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: textInput }),
@@ -741,7 +747,7 @@ const Index = () => {
                               <p className="whitespace-pre-wrap">{message.content}</p>
                             </div>
                             
-                            {message.sources && message.sources.length > 0 && (
+                            {Array.isArray(message.sources) && message.sources.length > 0 && (
                               <div className="mt-4 pt-4 border-t border-border/40">
                                 <p className="text-xs text-muted-foreground mb-3 font-medium">Sources :</p>
                                 <div className="flex flex-wrap gap-2">
