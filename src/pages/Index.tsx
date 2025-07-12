@@ -223,8 +223,9 @@ const Index = () => {
       role: msg.type === 'user' ? 'user' : 'assistant',
       content: msg.content
     }));
+    const baseURL = import.meta.env.VITE_API_URL;
     try {
-      const response = await fetch('api/ask', {
+      const response = await fetch('${baseURL}/api/ask', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: fullHistory, question : content }),
@@ -301,7 +302,7 @@ const Index = () => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('api/file', {
+      const response = await fetch('${baseURL}/api/file', {
         method: "POST",
         body: formData,
         cache: "no-cache"
@@ -359,7 +360,7 @@ const Index = () => {
     setUploadProgress(0);
 
     try {
-      const response = await fetch('api/text', {
+      const response = await fetch('${baseURL}/api/text', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: textInput }),
