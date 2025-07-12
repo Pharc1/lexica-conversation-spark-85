@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Plus, User, FileText, Upload, History, MessageSquare, Trash2, Type, File, Database, Clock, HelpCircle } from 'lucide-react';
+import { Send, Plus, User, FileText, Upload, History, MessageSquare, Trash2, Type, File, Database, Clock, HelpCircle, Sparkles, Archive, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { ErrorDisplay } from '@/components/ErrorDisplay';
 import { OnboardingTooltip } from '@/components/OnboardingTooltip';
@@ -76,7 +76,7 @@ const Index = () => {
       target: '[data-onboarding="add-button"]',
       title: 'Ajouter du contenu',
       description: 'Cliquez ici pour ajouter des fichiers PDF ou du texte directement',
-      position: 'bottom' as const
+      position: 'top' as const
     },
     {
       id: 'input',
@@ -90,7 +90,7 @@ const Index = () => {
       target: '[data-onboarding="history"]',
       title: 'Vos historiques',
       description: 'Accédez à vos données et conversations précédentes',
-      position: 'bottom' as const
+      position: 'left' as const
     }
   ];
 
@@ -424,33 +424,50 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex flex-col">
       {/* Modern Header */}
       <header className="border-b border-border/40 bg-background/95 backdrop-blur-xl sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="relative">
-              <div className="w-9 h-9 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-                <span className="text-primary-foreground font-bold text-lg">L</span>
+            <button 
+              onClick={() => {
+                setMessages([]);
+                setHasStartedChat(false);
+                setCurrentConversationId(null);
+                setInputValue('');
+              }}
+              className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-200"
+            >
+              <div className="relative">
+                <div className="w-9 h-9 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                  <Sparkles className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur opacity-75" />
               </div>
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur opacity-75" />
-            </div>
-            <div>
-              <h1 className="text-xl font-semibold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
-                Lexica
-              </h1>
-            </div>
+              <div className="hidden sm:block">
+                <h1 className="text-xl font-semibold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
+                  Lexica
+                </h1>
+              </div>
+            </button>
           </div>
           
-          <div className="flex items-center space-x-3">
-            <Button 
-              onClick={startNewConversation}
-              variant="ghost" 
-              size="sm"
-              className="text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
-            >
-              Nouvelle conversation
-            </Button>
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            {/* New Conversation Button - Only show when in chat mode */}
+            {hasStartedChat && (
+              <>
+                <Button 
+                  onClick={startNewConversation}
+                  variant="ghost" 
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 hidden sm:flex items-center gap-2"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Nouvelle conversation
+                </Button>
+                
+                <div className="h-4 w-px bg-border/60 hidden sm:block" />
+              </>
+            )}
             
-            <div className="h-4 w-px bg-border/60" />
-            
+            {/* Help Button */}
             <Button
               variant="ghost"
               size="icon"
@@ -460,22 +477,24 @@ const Index = () => {
               <HelpCircle className="w-4 h-4" />
             </Button>
             
-            <div data-onboarding="history" className="flex items-center space-x-2">
+            {/* History Section */}
+            <div data-onboarding="history" className="flex items-center space-x-1 sm:space-x-2">
+              {/* Data History */}
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" size="icon" className="h-9 w-9 border-border/60 hover:border-border hover:bg-muted/50 transition-all duration-200">
-                    <Database className="w-4 h-4" />
+                    <Archive className="w-4 h-4" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent className="w-80 z-50 border-border/60">
+                <SheetContent side="right" className="w-full sm:w-80 z-50 border-border/60">
                   <SheetHeader>
                     <SheetTitle className="flex items-center gap-2">
-                      <Database className="w-5 h-5" />
-                      Historique des données
+                      <Archive className="w-5 h-5" />
+                      Mes données
                     </SheetTitle>
                   </SheetHeader>
                   <div className="mt-6">
-                    <ScrollArea className="h-96">
+                    <ScrollArea className="h-[calc(100vh-120px)]">
                       <div className="space-y-3">
                         {dataHistory.map((entry) => (
                           <div key={entry.id} className="p-3 rounded-lg border border-border/60 bg-card/50 hover:bg-card transition-colors duration-200">
@@ -501,7 +520,7 @@ const Index = () => {
                         ))}
                         {dataHistory.length === 0 && (
                           <div className="text-center py-12">
-                            <Database className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
+                            <Archive className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
                             <p className="text-sm text-muted-foreground">
                               Aucune donnée ajoutée
                             </p>
@@ -513,13 +532,14 @@ const Index = () => {
                 </SheetContent>
               </Sheet>
               
+              {/* Conversations History */}
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" size="icon" className="h-9 w-9 border-border/60 hover:border-border hover:bg-muted/50 transition-all duration-200">
-                    <History className="w-4 h-4" />
+                    <MessageSquare className="w-4 h-4" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent className="w-80 z-50 border-border/60">
+                <SheetContent side="right" className="w-full sm:w-80 z-50 border-border/60">
                   <SheetHeader>
                     <SheetTitle className="flex items-center gap-2">
                       <MessageSquare className="w-5 h-5" />
@@ -527,7 +547,7 @@ const Index = () => {
                     </SheetTitle>
                   </SheetHeader>
                   <div className="mt-6">
-                    <ScrollArea className="h-96">
+                    <ScrollArea className="h-[calc(100vh-120px)]">
                       <div className="space-y-2">
                         {conversations.map((conv) => (
                           <div key={conv.id} className="group relative">
@@ -576,26 +596,26 @@ const Index = () => {
 
       {/* Initial centered input state */}
       {!hasStartedChat && (
-        <div className="flex-1 flex items-center justify-center px-6">
+        <div className="flex-1 flex items-center justify-center px-4 sm:px-6">
           <div className="w-full max-w-2xl">
-            <div className="text-center mb-16">
-              <div className="relative mb-8">
-                <div className="w-20 h-20 bg-gradient-to-r from-primary via-primary to-primary/80 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-primary/25">
-                  <span className="text-primary-foreground font-bold text-3xl">L</span>
+            <div className="text-center mb-12 sm:mb-16">
+              <div className="relative mb-6 sm:mb-8">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-primary via-primary to-primary/80 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-primary/25">
+                  <Sparkles className="text-primary-foreground font-bold text-2xl sm:text-3xl" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-primary/10 rounded-3xl blur-xl scale-110" />
               </div>
               
-              <h1 className="text-5xl font-light bg-gradient-to-r from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent mb-4">
+              <h1 className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent mb-4">
                 Lexica
               </h1>
               
               {dataHistory.length === 0 ? (
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground text-base sm:text-lg">
                   Commencez par ajouter votre contenu
                 </p>
               ) : (
-                <p className="text-muted-foreground text-lg">
+                <p className="text-muted-foreground text-base sm:text-lg">
                   Posez votre question
                 </p>
               )}
@@ -610,14 +630,15 @@ const Index = () => {
                 className="hidden"
               />
               
-              <div className="flex items-center bg-card/80 backdrop-blur-sm border border-border/60 rounded-2xl p-4 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300">
+              <div className="flex items-center bg-card/80 backdrop-blur-sm border border-border/60 rounded-2xl p-3 sm:p-4 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300">
+                {/* Add Button - Always visible at message level */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       size="icon"
                       disabled={isUploading || isLoading}
-                      className="h-10 w-10 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
+                      className="h-10 w-10 hover:bg-muted/50 transition-all duration-200 mr-2"
                       data-onboarding="add-button"
                     >
                       <Plus className="w-5 h-5" />
@@ -644,7 +665,7 @@ const Index = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                
+
                 <Input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
@@ -659,7 +680,7 @@ const Index = () => {
                   onClick={() => handleSendMessage(inputValue)}
                   disabled={!inputValue.trim() || isLoading || dataHistory.length === 0}
                   size="icon"
-                  className="h-10 w-10 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-200"
+                  className="h-10 w-10 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-200 ml-2"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
@@ -711,17 +732,17 @@ const Index = () => {
       {hasStartedChat && (
         <>
           {/* Messages */}
-          <div className="flex-1 px-6 py-8">
+          <div className="flex-1 px-4 sm:px-6 py-6 sm:py-8">
             <ScrollArea className="h-full custom-scrollbar">
-              <div className="max-w-4xl mx-auto space-y-8">
+              <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
                 {messages.map((message, index) => (
                   <div
                     key={message.id}
                     className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} animate-slide-in-up`}
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    <div className={`flex items-start space-x-4 max-w-3xl ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200 ${
+                    <div className={`flex items-start space-x-3 sm:space-x-4 max-w-3xl w-full sm:w-auto ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200 flex-shrink-0 ${
                         message.type === 'user' 
                           ? 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25' 
                           : 'bg-muted/80 text-muted-foreground'
@@ -729,7 +750,7 @@ const Index = () => {
                         {message.type === 'user' ? <User className="w-4 h-4" /> : <span className="font-bold text-xs"> L </span>}
                       </div>
                       
-                      <div className={`rounded-2xl px-6 py-4 shadow-sm transition-all duration-200 hover:shadow-md ${
+                      <div className={`rounded-2xl px-4 sm:px-6 py-3 sm:py-4 shadow-sm transition-all duration-200 hover:shadow-md min-w-0 flex-1 sm:flex-initial ${
                         message.type === 'user' 
                           ? 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground' 
                           : 'bg-card/80 backdrop-blur-sm border border-border/40'
@@ -778,7 +799,7 @@ const Index = () => {
           </div>
 
           {/* Fixed input at bottom */}
-          <div className="border-t border-border/40 bg-background/95 backdrop-blur-xl px-6 py-4 sticky bottom-0">
+          <div className="border-t border-border/40 bg-background/95 backdrop-blur-xl px-4 sm:px-6 py-4 sticky bottom-0">
             <div className="max-w-4xl mx-auto">
               <input
                 ref={fileInputRef}
@@ -789,13 +810,14 @@ const Index = () => {
               />
               
               <div className="flex items-center bg-card/80 backdrop-blur-sm border border-border/60 rounded-2xl p-3 shadow-lg">
+                {/* Add Button - Always available in chat mode */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
                       size="icon"
                       disabled={isUploading || isLoading}
-                      className="h-9 w-9 text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
+                      className="h-9 w-9 hover:bg-muted/50 transition-all duration-200 mr-2"
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
@@ -821,7 +843,7 @@ const Index = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                
+
                 <Input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
@@ -843,7 +865,7 @@ const Index = () => {
                   onClick={() => handleSendMessage(inputValue)}
                   disabled={!inputValue.trim() || isLoading}
                   size="icon"
-                  className="h-9 w-9 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-200"
+                  className="h-9 w-9 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-200 ml-2"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
@@ -855,7 +877,7 @@ const Index = () => {
 
       {/* Text Input Modal */}
       <Dialog open={textModalOpen} onOpenChange={setTextModalOpen}>
-        <DialogContent className="sm:max-w-[600px] border-border/60 bg-card/95 backdrop-blur-sm">
+        <DialogContent className="sm:max-w-[600px] mx-4 border-border/60 bg-card/95 backdrop-blur-sm">
           <DialogHeader>
             <DialogTitle className="text-xl">Ajouter du texte</DialogTitle>
           </DialogHeader>
