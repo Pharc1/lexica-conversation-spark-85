@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Plus, User, FileText, Upload, History, MessageSquare, Trash2, Type, File, Database, Clock, HelpCircle } from 'lucide-react';
+import { Send, Plus, User, FileText, Upload, History, MessageSquare, Trash2, Type, File, Database, Clock, HelpCircle, Sparkles, Archive, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -75,7 +75,7 @@ const Index = () => {
       target: '[data-onboarding="add-button"]',
       title: 'Ajouter du contenu',
       description: 'Cliquez ici pour ajouter des fichiers PDF ou du texte directement',
-      position: 'bottom' as const
+      position: 'top' as const
     },
     {
       id: 'input',
@@ -436,7 +436,7 @@ const Index = () => {
             >
               <div className="relative">
                 <div className="w-9 h-9 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-                  <span className="text-primary-foreground font-bold text-lg">L</span>
+                  <Sparkles className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur opacity-75" />
               </div>
@@ -449,53 +449,22 @@ const Index = () => {
           </div>
           
           <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Add Button - Always visible */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
+            {/* New Conversation Button - Only show when in chat mode */}
+            {hasStartedChat && (
+              <>
+                <Button 
+                  onClick={startNewConversation}
+                  variant="ghost" 
                   size="sm"
-                  disabled={isUploading || isLoading}
-                  className="border-border/60 hover:border-border hover:bg-muted/50 transition-all duration-200"
-                  data-onboarding="add-button"
+                  className="text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 hidden sm:flex items-center gap-2"
                 >
-                  <Plus className="w-4 h-4 sm:mr-2" />
-                  <span className="hidden sm:inline">Ajouter</span>
+                  <MessageCircle className="w-4 h-4" />
+                  Nouvelle conversation
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-52 bg-card/95 backdrop-blur-sm border-border/60 shadow-xl z-50">
-                <DropdownMenuItem 
-                  onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <File className="w-4 h-4 text-primary" />
-                  </div>
-                  <span>Ajouter un fichier</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => setTextModalOpen(true)}
-                  className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
-                >
-                  <div className="w-8 h-8 rounded-lg bg-secondary/80 flex items-center justify-center">
-                    <Type className="w-4 h-4 text-secondary-foreground" />
-                  </div>
-                  <span>Ajouter du texte</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* New Conversation Button */}
-            <Button 
-              onClick={startNewConversation}
-              variant="ghost" 
-              size="sm"
-              className="text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 hidden sm:flex"
-            >
-              Nouvelle conversation
-            </Button>
-            
-            <div className="h-4 w-px bg-border/60 hidden sm:block" />
+                
+                <div className="h-4 w-px bg-border/60 hidden sm:block" />
+              </>
+            )}
             
             {/* Help Button */}
             <Button
@@ -513,14 +482,14 @@ const Index = () => {
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" size="icon" className="h-9 w-9 border-border/60 hover:border-border hover:bg-muted/50 transition-all duration-200">
-                    <Database className="w-4 h-4" />
+                    <Archive className="w-4 h-4" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-full sm:w-80 z-50 border-border/60">
                   <SheetHeader>
                     <SheetTitle className="flex items-center gap-2">
-                      <Database className="w-5 h-5" />
-                      Historique des données
+                      <Archive className="w-5 h-5" />
+                      Mes données
                     </SheetTitle>
                   </SheetHeader>
                   <div className="mt-6">
@@ -550,7 +519,7 @@ const Index = () => {
                         ))}
                         {dataHistory.length === 0 && (
                           <div className="text-center py-12">
-                            <Database className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
+                            <Archive className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
                             <p className="text-sm text-muted-foreground">
                               Aucune donnée ajoutée
                             </p>
@@ -566,7 +535,7 @@ const Index = () => {
               <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="outline" size="icon" className="h-9 w-9 border-border/60 hover:border-border hover:bg-muted/50 transition-all duration-200">
-                    <History className="w-4 h-4" />
+                    <MessageSquare className="w-4 h-4" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-full sm:w-80 z-50 border-border/60">
@@ -631,7 +600,7 @@ const Index = () => {
             <div className="text-center mb-12 sm:mb-16">
               <div className="relative mb-6 sm:mb-8">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-primary via-primary to-primary/80 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-primary/25">
-                  <span className="text-primary-foreground font-bold text-2xl sm:text-3xl">L</span>
+                  <Sparkles className="text-primary-foreground font-bold text-2xl sm:text-3xl" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-primary/10 rounded-3xl blur-xl scale-110" />
               </div>
@@ -661,6 +630,41 @@ const Index = () => {
               />
               
               <div className="flex items-center bg-card/80 backdrop-blur-sm border border-border/60 rounded-2xl p-3 sm:p-4 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300">
+                {/* Add Button - Always visible at message level */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      disabled={isUploading || isLoading}
+                      className="h-10 w-10 hover:bg-muted/50 transition-all duration-200 mr-2"
+                      data-onboarding="add-button"
+                    >
+                      <Plus className="w-5 h-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-52 bg-card/95 backdrop-blur-sm border-border/60 shadow-xl z-50">
+                    <DropdownMenuItem 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <File className="w-4 h-4 text-primary" />
+                      </div>
+                      <span>Ajouter un fichier</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={() => setTextModalOpen(true)}
+                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-secondary/80 flex items-center justify-center">
+                        <Type className="w-4 h-4 text-secondary-foreground" />
+                      </div>
+                      <span>Ajouter du texte</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
                 <Input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
@@ -742,7 +746,7 @@ const Index = () => {
                           ? 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25' 
                           : 'bg-muted/80 text-muted-foreground'
                       }`}>
-                        {message.type === 'user' ? <User className="w-3 h-3 sm:w-4 sm:h-4" /> : <span className="font-bold text-xs">AI</span>}
+                        {message.type === 'user' ? <User className="w-3 h-3 sm:w-4 sm:h-4" /> : <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />}
                       </div>
                       
                       <div className={`rounded-2xl px-4 sm:px-6 py-3 sm:py-4 shadow-sm transition-all duration-200 hover:shadow-md min-w-0 flex-1 sm:flex-initial ${
@@ -801,6 +805,40 @@ const Index = () => {
               />
               
               <div className="flex items-center bg-card/80 backdrop-blur-sm border border-border/60 rounded-2xl p-3 shadow-lg">
+                {/* Add Button - Always available in chat mode */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      disabled={isUploading || isLoading}
+                      className="h-9 w-9 hover:bg-muted/50 transition-all duration-200 mr-2"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-52 bg-card/95 backdrop-blur-sm border-border/60 shadow-xl z-50">
+                    <DropdownMenuItem 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <File className="w-4 h-4 text-primary" />
+                      </div>
+                      <span>Ajouter un fichier</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={() => setTextModalOpen(true)}
+                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
+                    >
+                      <div className="w-8 h-8 rounded-lg bg-secondary/80 flex items-center justify-center">
+                        <Type className="w-4 h-4 text-secondary-foreground" />
+                      </div>
+                      <span>Ajouter du texte</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
                 <Input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
