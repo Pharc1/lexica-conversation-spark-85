@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Textarea } from '@/components/ui/textarea';
 import { ErrorDisplay } from '@/components/ErrorDisplay';
 import { OnboardingTooltip } from '@/components/OnboardingTooltip';
+import ReactMarkdown from 'react-markdown';
 
 interface Source {
   title: string;
@@ -725,7 +726,7 @@ const Index = () => {
                           ? 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25' 
                           : 'bg-muted/80 text-muted-foreground'
                       }`}>
-                        {message.type === 'user' ? <User className="w-4 h-4" /> : <span className="font-bold text-xs">AI</span>}
+                        {message.type === 'user' ? <User className="w-4 h-4" /> : <span className="font-bold text-xs"> L </span>}
                       </div>
                       
                       <div className={`rounded-2xl px-6 py-4 shadow-sm transition-all duration-200 hover:shadow-md ${
@@ -744,7 +745,11 @@ const Index = () => {
                         ) : (
                           <>
                             <div className="text-sm leading-relaxed">
-                              <p className="whitespace-pre-wrap">{message.content}</p>
+                              <div className="prose prose-sm max-w-none dark:prose-invert">
+                                <ReactMarkdown>
+                                  {message.content}
+                                </ReactMarkdown>
+                              </div>
                             </div>
                             
                             {Array.isArray(message.sources) && message.sources.length > 0 && (
