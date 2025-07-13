@@ -685,15 +685,15 @@ const Index = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={dataHistory.length === 0 ? "Ajoutez d'abord du contenu..." : "Tapez votre message..."}
-                  disabled={isLoading || dataHistory.length === 0}
+                  placeholder="Tapez votre message..."
+                  disabled={isLoading}
                   className="border-0 bg-transparent focus-visible:ring-0 text-base placeholder:text-muted-foreground/50 font-light"
                   data-onboarding="input"
                 />
                 
                 <Button
                   onClick={() => handleSendMessage(inputValue)}
-                  disabled={!inputValue.trim() || isLoading || dataHistory.length === 0}
+                  disabled={!inputValue.trim() || isLoading}
                   size="icon"
                   className="h-11 w-11 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 ml-3 rounded-2xl"
                 >
