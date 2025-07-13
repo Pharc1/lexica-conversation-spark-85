@@ -428,10 +428,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20 flex flex-col">
-      {/* Modern Header */}
-      <header className="border-b border-border/40 bg-background/95 backdrop-blur-xl sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/10 flex flex-col">
+      {/* Enhanced Modern Header */}
+      <header className="border-b border-border/20 bg-background/80 backdrop-blur-xl sticky top-0 z-40 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <button 
               onClick={() => {
@@ -440,16 +440,16 @@ const Index = () => {
                 setCurrentConversationId(null);
                 setInputValue('');
               }}
-              className="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-200"
+              className="flex items-center space-x-3 hover:opacity-70 transition-all duration-300 group"
             >
               <div className="relative">
-                <div className="w-9 h-9 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
+                <div className="w-10 h-10 bg-gradient-to-br from-primary via-primary to-primary/90 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-all duration-300">
                   <Sparkles className="w-5 h-5 text-primary-foreground" />
                 </div>
-                <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/10 rounded-xl blur opacity-75" />
+                <div className="absolute -inset-1 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl blur opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-semibold bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent">
+                <h1 className="text-xl font-semibold bg-gradient-to-r from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent">
                   Lexica
                 </h1>
               </div>
@@ -462,40 +462,44 @@ const Index = () => {
               <>
                 <Button 
                   onClick={startNewConversation}
-                  variant="ghost" 
+                  variant="outline" 
                   size="sm"
-                  className="text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200 hidden sm:flex items-center gap-2"
+                  className="text-muted-foreground hover:text-foreground hover:bg-muted/40 border-border/30 hover:border-border/60 transition-all duration-300 hidden sm:flex items-center gap-2 rounded-xl shadow-sm hover:shadow-md"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Nouvelle conversation
                 </Button>
                 
-                <div className="h-4 w-px bg-border/60 hidden sm:block" />
+                <div className="h-4 w-px bg-border/40 hidden sm:block" />
               </>
             )}
             
             {/* Help Button */}
             <Button
-              variant="ghost"
+              variant="outline"
               size="icon"
-              className="h-9 w-9 hover:bg-muted/50 transition-all duration-200"
+              className="h-9 w-9 border-border/30 hover:border-border/60 hover:bg-muted/40 transition-all duration-300 rounded-xl shadow-sm hover:shadow-md"
               onClick={() => setShowOnboarding(true)}
             >
               <HelpCircle className="w-4 h-4" />
             </Button>
             
             {/* History Section */}
-            <div data-onboarding="history" className="flex items-center space-x-1 sm:space-x-2">
+            <div data-onboarding="history" className="flex items-center space-x-2">
               {/* Data History */}
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="outline" size="icon" className="h-9 w-9 border-border/60 hover:border-border hover:bg-muted/50 transition-all duration-200">
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="h-9 w-9 border-border/30 hover:border-border/60 hover:bg-muted/80 transition-all duration-300 rounded-xl shadow-sm hover:shadow-md"
+                  >
                     <Archive className="w-4 h-4" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-full sm:w-80 z-50 border-border/60">
+                <SheetContent side="right" className="w-full sm:w-80 z-50 border-border/40 bg-background/95 backdrop-blur-xl">
                   <SheetHeader>
-                    <SheetTitle className="flex items-center gap-2">
+                    <SheetTitle className="flex items-center gap-2 text-lg">
                       <Archive className="w-5 h-5" />
                       Mes données
                     </SheetTitle>
@@ -504,14 +508,14 @@ const Index = () => {
                     <ScrollArea className="h-[calc(100vh-120px)]">
                       <div className="space-y-3">
                         {dataHistory.map((entry) => (
-                          <div key={entry.id} className="p-3 rounded-lg border border-border/60 bg-card/50 hover:bg-card transition-colors duration-200">
+                          <div key={entry.id} className="p-4 rounded-xl border border-border/40 bg-card/60 hover:bg-card/80 transition-all duration-300 hover:shadow-sm">
                             <div className="flex items-start gap-3">
                               {entry.type === 'file' ? (
-                                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                                   <File className="w-4 h-4 text-primary" />
                                 </div>
                               ) : (
-                                <div className="w-8 h-8 rounded-lg bg-secondary/80 flex items-center justify-center">
+                                <div className="w-10 h-10 rounded-xl bg-secondary/60 flex items-center justify-center">
                                   <Type className="w-4 h-4 text-secondary-foreground" />
                                 </div>
                               )}
@@ -527,7 +531,7 @@ const Index = () => {
                         ))}
                         {dataHistory.length === 0 && (
                           <div className="text-center py-12">
-                            <Archive className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
+                            <Archive className="w-12 h-12 text-muted-foreground/40 mx-auto mb-3" />
                             <p className="text-sm text-muted-foreground">
                               Aucune donnée ajoutée
                             </p>
@@ -542,13 +546,17 @@ const Index = () => {
               {/* Conversations History */}
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="outline" size="icon" className="h-9 w-9 border-border/60 hover:border-border hover:bg-muted/50 transition-all duration-200">
+                  <Button 
+                    variant="outline" 
+                    size="icon" 
+                    className="h-9 w-9 border-border/30 hover:border-border/60 hover:bg-muted/80 transition-all duration-300 rounded-xl shadow-sm hover:shadow-md"
+                  >
                     <MessageSquare className="w-4 h-4" />
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="w-full sm:w-80 z-50 border-border/60">
+                <SheetContent side="right" className="w-full sm:w-80 z-50 border-border/40 bg-background/95 backdrop-blur-xl">
                   <SheetHeader>
-                    <SheetTitle className="flex items-center gap-2">
+                    <SheetTitle className="flex items-center gap-2 text-lg">
                       <MessageSquare className="w-5 h-5" />
                       Conversations
                     </SheetTitle>
@@ -560,7 +568,7 @@ const Index = () => {
                           <div key={conv.id} className="group relative">
                             <Button
                               variant={currentConversationId === conv.id ? "secondary" : "ghost"}
-                              className="w-full justify-start h-auto p-3 text-left hover:bg-muted/50 transition-all duration-200"
+                              className="w-full justify-start h-auto p-4 text-left hover:bg-muted/80 transition-all duration-300 rounded-xl border border-transparent hover:border-border/40"
                               onClick={() => loadConversation(conv)}
                             >
                               <div className="pr-8 w-full">
@@ -573,7 +581,7 @@ const Index = () => {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+                              className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-300 rounded-lg"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 deleteConversation(conv.id);
@@ -585,7 +593,7 @@ const Index = () => {
                         ))}
                         {conversations.length === 0 && (
                           <div className="text-center py-12">
-                            <MessageSquare className="w-12 h-12 text-muted-foreground/50 mx-auto mb-3" />
+                            <MessageSquare className="w-12 h-12 text-muted-foreground/40 mx-auto mb-3" />
                             <p className="text-sm text-muted-foreground">
                               Aucune conversation
                             </p>
@@ -606,23 +614,23 @@ const Index = () => {
         <div className="flex-1 flex items-center justify-center px-4 sm:px-6">
           <div className="w-full max-w-2xl">
             <div className="text-center mb-12 sm:mb-16">
-              <div className="relative mb-6 sm:mb-8">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-primary via-primary to-primary/80 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-primary/25">
-                  <Sparkles className="text-primary-foreground font-bold text-2xl sm:text-3xl" />
+              <div className="relative mb-8 sm:mb-10">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-primary via-primary to-primary/90 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-primary/20">
+                  <Sparkles className="text-primary-foreground font-bold text-3xl sm:text-4xl" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-primary/10 rounded-3xl blur-xl scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-3xl blur-2xl scale-125 opacity-60" />
               </div>
               
-              <h1 className="text-4xl sm:text-5xl font-light bg-gradient-to-r from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent mb-4">
+              <h1 className="text-5xl sm:text-6xl font-light bg-gradient-to-r from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent mb-4 tracking-tight">
                 Lexica
               </h1>
               
               {dataHistory.length === 0 ? (
-                <p className="text-muted-foreground text-base sm:text-lg">
+                <p className="text-muted-foreground text-lg sm:text-xl font-light">
                   Commencez par ajouter votre contenu
                 </p>
               ) : (
-                <p className="text-muted-foreground text-base sm:text-lg">
+                <p className="text-muted-foreground text-lg sm:text-xl font-light">
                   Posez votre question
                 </p>
               )}
@@ -637,7 +645,7 @@ const Index = () => {
                 className="hidden"
               />
               
-              <div className="flex items-center bg-card/80 backdrop-blur-sm border border-border/60 rounded-2xl p-3 sm:p-4 shadow-lg shadow-black/5 hover:shadow-xl hover:shadow-black/10 transition-all duration-300">
+              <div className="flex items-center bg-card/60 backdrop-blur-xl border border-border/30 rounded-3xl p-4 sm:p-5 shadow-xl">
                 {/* Add Button - Always visible at message level */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -645,30 +653,30 @@ const Index = () => {
                       variant="ghost"
                       size="icon"
                       disabled={isUploading || isLoading}
-                      className="h-10 w-10 hover:bg-muted/50 transition-all duration-200 mr-2"
+                      className="h-11 w-11 hover:bg-muted/60 transition-all duration-300 mr-3 rounded-2xl border border-transparent hover:border-border/40"
                       data-onboarding="add-button"
                     >
                       <Plus className="w-5 h-5" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-52 bg-card/95 backdrop-blur-sm border-border/60 shadow-xl z-50">
+                  <DropdownMenuContent align="start" className="w-56 bg-card/95 backdrop-blur-xl border-border/40 shadow-2xl z-50 rounded-2xl p-2">
                     <DropdownMenuItem 
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
+                      className="flex items-center gap-3 cursor-pointer p-4 hover:bg-muted/60 transition-all duration-300 rounded-xl"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                         <File className="w-4 h-4 text-primary" />
                       </div>
-                      <span>Ajouter un fichier</span>
+                      <span className="font-medium">Ajouter un fichier</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => setTextModalOpen(true)}
-                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
+                      className="flex items-center gap-3 cursor-pointer p-4 hover:bg-muted/60 transition-all duration-300 rounded-xl"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-secondary/80 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-secondary/60 flex items-center justify-center">
                         <Type className="w-4 h-4 text-secondary-foreground" />
                       </div>
-                      <span>Ajouter du texte</span>
+                      <span className="font-medium">Ajouter du texte</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -677,17 +685,17 @@ const Index = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={dataHistory.length === 0 ? "Ajoutez d'abord du contenu..." : "Tapez votre message..."}
-                  disabled={isLoading || dataHistory.length === 0}
-                  className="border-0 bg-transparent focus-visible:ring-0 text-base placeholder:text-muted-foreground/60"
+                  placeholder="Tapez votre message..."
+                  disabled={isLoading}
+                  className="border-0 bg-transparent focus-visible:ring-0 text-base placeholder:text-muted-foreground/50 font-light"
                   data-onboarding="input"
                 />
                 
                 <Button
                   onClick={() => handleSendMessage(inputValue)}
-                  disabled={!inputValue.trim() || isLoading || dataHistory.length === 0}
+                  disabled={!inputValue.trim() || isLoading}
                   size="icon"
-                  className="h-10 w-10 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-200 ml-2"
+                  className="h-11 w-11 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 ml-3 rounded-2xl"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
@@ -712,16 +720,16 @@ const Index = () => {
             {/* Upload Progress */}
             {isUploading && (
               <div className="mt-6">
-                <div className="bg-card/80 backdrop-blur-sm border border-border/60 rounded-xl p-4 shadow-lg">
+                <div className="bg-card/60 backdrop-blur-xl border border-border/30 rounded-2xl p-5 shadow-xl">
                   <div className="flex items-center space-x-4">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Upload className="w-5 h-5 text-primary animate-pulse" />
+                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                      <Upload className="w-6 h-6 text-primary animate-pulse" />
                     </div>
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-foreground mb-2">Téléchargement en cours...</div>
-                      <div className="w-full bg-muted/50 rounded-full h-2 overflow-hidden">
+                      <div className="text-sm font-medium text-foreground mb-3">Téléchargement en cours...</div>
+                      <div className="w-full bg-muted/40 rounded-full h-2 overflow-hidden">
                         <div 
-                          className="bg-gradient-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-300 ease-out"
+                          className="bg-gradient-to-r from-primary to-primary/80 h-2 rounded-full transition-all duration-500 ease-out"
                           style={{ width: `${uploadProgress}%` }}
                         />
                       </div>
@@ -741,26 +749,26 @@ const Index = () => {
           {/* Messages */}
           <div className="flex-1 px-4 sm:px-6 py-6 sm:py-8">
             <ScrollArea className="h-full custom-scrollbar">
-              <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
+              <div className="max-w-4xl mx-auto space-y-8 sm:space-y-10">
                 {messages.map((message, index) => (
                   <div
                     key={message.id}
                     className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} animate-slide-in-up`}
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    <div className={`flex items-start space-x-3 sm:space-x-4 max-w-3xl w-full sm:w-auto ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-200 flex-shrink-0 ${
+                    <div className={`flex items-start space-x-4 sm:space-x-5 max-w-3xl w-full sm:w-auto ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-sm font-medium transition-all duration-300 flex-shrink-0 ${
                         message.type === 'user' 
-                          ? 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/25' 
-                          : 'bg-muted/80 text-muted-foreground'
+                          ? 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground shadow-lg shadow-primary/20' 
+                          : 'bg-muted/60 text-muted-foreground border border-border/30'
                       }`}>
-                        {message.type === 'user' ? <User className="w-4 h-4" /> : <span className="font-bold text-xs"> L </span>}
+                        {message.type === 'user' ? <User className="w-5 h-5" /> : <span className="font-semibold text-sm"> L </span>}
                       </div>
                       
-                      <div className={`rounded-2xl px-4 sm:px-6 py-3 sm:py-4 shadow-sm transition-all duration-200 hover:shadow-md min-w-0 flex-1 sm:flex-initial ${
+                      <div className={`rounded-3xl px-5 sm:px-7 py-4 sm:py-5 shadow-sm transition-all duration-300 hover:shadow-lg min-w-0 flex-1 sm:flex-initial ${
                         message.type === 'user' 
-                          ? 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground' 
-                          : 'bg-card/80 backdrop-blur-sm border border-border/40'
+                          ? 'bg-gradient-to-br from-primary to-primary/95 text-primary-foreground shadow-lg shadow-primary/10' 
+                          : 'bg-card/60 backdrop-blur-sm border border-border/30'
                       }`}>
                         {message.isLoading ? (
                           <div className="flex items-center space-x-2">
@@ -772,7 +780,7 @@ const Index = () => {
                           </div>
                         ) : (
                           <>
-                            <div className="text-sm leading-relaxed">
+                            <div className="text-sm leading-relaxed font-light">
                               <div className="prose prose-sm max-w-none dark:prose-invert">
                                 <ReactMarkdown>
                                   {message.content}
@@ -781,11 +789,11 @@ const Index = () => {
                             </div>
                             
                             {Array.isArray(message.sources) && message.sources.length > 0 && (
-                              <div className="mt-4 pt-4 border-t border-border/40">
+                              <div className="mt-4 pt-4 border-t border-border/30">
                                 <p className="text-xs text-muted-foreground mb-3 font-medium">Sources :</p>
                                 <div className="flex flex-wrap gap-2">
                                   {message.sources.map((source, index) => (
-                                    <Badge key={index} variant="secondary" className="text-xs bg-muted/50 hover:bg-muted transition-colors duration-200">
+                                    <Badge key={index} variant="secondary" className="text-xs bg-muted/40 hover:bg-muted/60 transition-colors duration-300 rounded-lg border border-border/20">
                                       <FileText className="w-3 h-3 mr-1" />
                                       {source.title}
                                       {source.page && ` (p.${source.page})`}
@@ -806,7 +814,7 @@ const Index = () => {
           </div>
 
           {/* Fixed input at bottom */}
-          <div className="border-t border-border/40 bg-background/95 backdrop-blur-xl px-4 sm:px-6 py-4 sticky bottom-0">
+          <div className="border-t border-border/20 bg-background/80 backdrop-blur-xl px-4 sm:px-6 py-4 sticky bottom-0 shadow-lg">
             <div className="max-w-4xl mx-auto">
               <input
                 ref={fileInputRef}
@@ -816,7 +824,7 @@ const Index = () => {
                 className="hidden"
               />
               
-              <div className="flex items-center bg-card/80 backdrop-blur-sm border border-border/60 rounded-2xl p-3 shadow-lg">
+              <div className="flex items-center bg-card/60 backdrop-blur-xl border border-border/30 rounded-3xl p-3 shadow-xl">
                 {/* Add Button - Always available in chat mode */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -824,29 +832,29 @@ const Index = () => {
                       variant="ghost"
                       size="icon"
                       disabled={isUploading || isLoading}
-                      className="h-9 w-9 hover:bg-muted/50 transition-all duration-200 mr-2"
+                      className="h-10 w-10 hover:bg-muted/60 transition-all duration-300 mr-3 rounded-2xl border border-transparent hover:border-border/40"
                     >
                       <Plus className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-52 bg-card/95 backdrop-blur-sm border-border/60 shadow-xl z-50">
+                  <DropdownMenuContent align="start" className="w-56 bg-card/95 backdrop-blur-xl border-border/40 shadow-2xl z-50 rounded-2xl p-2">
                     <DropdownMenuItem 
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
+                      className="flex items-center gap-3 cursor-pointer p-4 hover:bg-muted/60 transition-all duration-300 rounded-xl"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                         <File className="w-4 h-4 text-primary" />
                       </div>
-                      <span>Ajouter un fichier</span>
+                      <span className="font-medium">Ajouter un fichier</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => setTextModalOpen(true)}
-                      className="flex items-center gap-3 cursor-pointer p-3 hover:bg-muted/50 transition-colors duration-200"
+                      className="flex items-center gap-3 cursor-pointer p-4 hover:bg-muted/60 transition-all duration-300 rounded-xl"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-secondary/80 flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-secondary/60 flex items-center justify-center">
                         <Type className="w-4 h-4 text-secondary-foreground" />
                       </div>
-                      <span>Ajouter du texte</span>
+                      <span className="font-medium">Ajouter du texte</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -857,7 +865,7 @@ const Index = () => {
                   onKeyPress={handleKeyPress}
                   placeholder="Tapez votre message..."
                   disabled={isLoading}
-                  className="border-0 bg-transparent focus-visible:ring-0 placeholder:text-muted-foreground/60"
+                  className="border-0 bg-transparent focus-visible:ring-0 placeholder:text-muted-foreground/50 font-light"
                 />
                 
                 {chatError && (
@@ -872,7 +880,7 @@ const Index = () => {
                   onClick={() => handleSendMessage(inputValue)}
                   disabled={!inputValue.trim() || isLoading}
                   size="icon"
-                  className="h-9 w-9 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-200 ml-2"
+                  className="h-10 w-10 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 ml-3 rounded-2xl"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
@@ -884,16 +892,16 @@ const Index = () => {
 
       {/* Text Input Modal */}
       <Dialog open={textModalOpen} onOpenChange={setTextModalOpen}>
-        <DialogContent className="sm:max-w-[600px] mx-4 border-border/60 bg-card/95 backdrop-blur-sm">
+        <DialogContent className="sm:max-w-[600px] mx-4 border-border/40 bg-card/95 backdrop-blur-xl rounded-3xl">
           <DialogHeader>
-            <DialogTitle className="text-xl">Ajouter du texte</DialogTitle>
+            <DialogTitle className="text-xl font-semibold">Ajouter du texte</DialogTitle>
           </DialogHeader>
           <div className="space-y-6">
             <Textarea
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
               placeholder="Saisissez votre texte ici..."
-              className="min-h-[200px] resize-none border-border/60 bg-background/50 focus:bg-background transition-colors duration-200"
+              className="min-h-[200px] resize-none border-border/40 bg-background/50 focus:bg-background transition-all duration-300 rounded-2xl font-light"
             />
             
             {textError && (
@@ -910,14 +918,14 @@ const Index = () => {
                   setTextInput('');
                   setTextError(null);
                 }}
-                className="border-border/60"
+                className="border-border/40 hover:bg-muted/60 transition-all duration-300 rounded-xl"
               >
                 Annuler
               </Button>
               <Button
                 onClick={handleTextSubmit}
                 disabled={!textInput.trim() || isUploading}
-                className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25"
+                className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25 rounded-xl"
               >
                 {isUploading ? "Envoi..." : "Valider"}
               </Button>
