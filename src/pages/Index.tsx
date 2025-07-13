@@ -462,9 +462,9 @@ const Index = () => {
               <>
                 <Button 
                   onClick={startNewConversation}
-                  variant="ghost" 
+                  variant="outline" 
                   size="sm"
-                  className="text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-all duration-300 hidden sm:flex items-center gap-2 rounded-xl border border-transparent hover:border-border/40"
+                  className="text-muted-foreground hover:text-foreground hover:bg-muted/40 border-border/30 hover:border-border/60 transition-all duration-300 hidden sm:flex items-center gap-2 rounded-xl shadow-sm hover:shadow-md"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Nouvelle conversation
@@ -476,9 +476,9 @@ const Index = () => {
             
             {/* Help Button */}
             <Button
-              variant="ghost"
+              variant="outline"
               size="icon"
-              className="h-9 w-9 hover:bg-muted/80 transition-all duration-300 rounded-xl border border-transparent hover:border-border/40"
+              className="h-9 w-9 border-border/30 hover:border-border/60 hover:bg-muted/40 transition-all duration-300 rounded-xl shadow-sm hover:shadow-md"
               onClick={() => setShowOnboarding(true)}
             >
               <HelpCircle className="w-4 h-4" />
