@@ -271,8 +271,7 @@ const Index = () => {
           ? { ...msg, sources: sources.length > 0 ? sources : undefined, isLoading: false }
           : msg
       ));
-      console.log("length of sources", sources.length)
-      console.log("sources is", sources)
+
 
     } catch (error) {
       console.error("Erreur lors de la requête : ", error);
