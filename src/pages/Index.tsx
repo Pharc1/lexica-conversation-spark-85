@@ -294,6 +294,13 @@ const Index = () => {
       return;
     }
 
+    // Check file size (50MB = 50 * 1024 * 1024 bytes)
+    const maxSizeInBytes = 50 * 1024 * 1024; // 50MB
+    if (file.size > maxSizeInBytes) {
+      setUploadError('Le fichier est trop volumineux. La taille maximale autorisée est de 50 Mo.');
+      return;
+    }
+
     setUploadError(null);
     setIsUploading(true);
     setUploadProgress(0);
